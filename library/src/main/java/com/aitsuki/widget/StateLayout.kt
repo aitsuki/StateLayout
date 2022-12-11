@@ -2,11 +2,8 @@ package com.aitsuki.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.SparseArray
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 
@@ -15,7 +12,6 @@ class StateLayout @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs) {
 
     private var contentView: View? = null
-    private var states = SparseArray<View>()
 
     fun setContentView(view: View?) {
         this.contentView = view
@@ -24,15 +20,6 @@ class StateLayout @JvmOverloads constructor(
     fun showContent() {
         val view = checkNotNull(contentView) { "No content view" }
         showState(view)
-    }
-
-    fun showState(@LayoutRes layoutId: Int): View {
-        var view = states[layoutId]
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(layoutId, this, false)
-            states[layoutId] = view
-        }
-        return showState(view)
     }
 
     fun showState(view: View): View {
