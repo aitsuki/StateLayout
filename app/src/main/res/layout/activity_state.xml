@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.aitsuki.widget.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/state_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StateActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="Hello"
-        android:textAppearance="?attr/textAppearanceHeadline2" />
+        app:menu="@menu/menu_state"
+        app:title="State"
+        app:titleCentered="true" />
 
-</com.aitsuki.widget.StateLayout>
+    <com.aitsuki.widget.StateLayout
+        android:id="@+id/state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".StateActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Hello"
+            android:textAppearance="?attr/textAppearanceHeadline2" />
+
+    </com.aitsuki.widget.StateLayout>
+</LinearLayout>
+
+

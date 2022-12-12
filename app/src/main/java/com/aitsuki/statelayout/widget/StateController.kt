@@ -1,4 +1,4 @@
-package com.aitsuki.statelayout
+package com.aitsuki.statelayout.widget
 
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +26,7 @@ class StateController(private val stateLayout: StateLayout) {
         if (p.dataExistsObserver(currentState) || p.emptyView == null) {
             stateLayout.showContent()
         } else {
-            stateLayout.showState(p.emptyView!!).setReloadClickListener()
+            stateLayout.showStateView(p.emptyView!!).setReloadClickListener()
         }
     }
 
@@ -37,7 +37,7 @@ class StateController(private val stateLayout: StateLayout) {
             updateRefreshState(true)
         } else {
             updateRefreshState(false)
-            stateLayout.showState(p.loadingView!!)
+            stateLayout.showStateView(p.loadingView!!)
         }
     }
 
@@ -48,7 +48,7 @@ class StateController(private val stateLayout: StateLayout) {
         if (p.dataExistsObserver(currentState)) {
             stateLayout.showContent()
         } else {
-            stateLayout.showState(p.errorView!!).setReloadClickListener()
+            stateLayout.showStateView(p.errorView!!).setReloadClickListener()
         }
     }
 

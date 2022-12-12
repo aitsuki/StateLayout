@@ -13,9 +13,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        // 展示各个状态的切换
         binding.state.setOnClickListener {
             startActivity(Intent(this, StateActivity::class.java))
+        }
+
+        // SwipeRefreshLayout 与 StateLayout 协作
+        binding.stateRefresh.setOnClickListener {
+            startActivity(Intent(this, StateRefreshActivity::class.java))
         }
     }
 }

@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.aitsuki.statelayout.StateActivity">
+    <item
+        android:id="@+id/state_content"
+        android:title="Content"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/state_loading"
+        android:title="Loading"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/state_empty"
+        android:title="Empty"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/state_error"
+        android:title="Error"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/state_custom"
+        android:title="Custom"
+        app:showAsAction="never" />
+</menu>
