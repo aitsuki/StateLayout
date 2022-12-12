@@ -7,13 +7,13 @@ import androidx.lifecycle.lifecycleScope
 import com.aitsuki.statelayout.databinding.ActivityStateRefreshBinding
 import com.aitsuki.statelayout.helper.StateHelper
 import kotlinx.coroutines.delay
-import kotlin.random.Random
 
 class StateRefreshActivity : AppCompatActivity() {
 
     companion object {
-        private val firstWords = arrayOf("White", "Black", "Blue", "Yellow", "Pink")
-        private val secondWords = arrayOf("Dogs", "Cats", "Ducks", "Birds")
+        private val firstWords =
+            arrayOf("White", "Black", "Blue", "Yellow", "Pink", "Green", "Orange", "Red")
+        private val secondWords = arrayOf("Dogs", "Cats", "Ducks", "Birds", "Pigs", "Cows", "Sheep")
     }
 
     private lateinit var binding: ActivityStateRefreshBinding
@@ -27,12 +27,9 @@ class StateRefreshActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStateRefreshBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.clear_cache) {
-                dataCache = null
-                Toast.makeText(this, "Cache has been clear, please refresh.", Toast.LENGTH_LONG)
-                    .show()
-            }
+        binding.toolbar.setOnMenuItemClickListener {
+            dataCache = null
+            refreshData()
             return@setOnMenuItemClickListener true
         }
         binding.refreshLayout.setOnRefreshListener { refreshData() }
@@ -47,22 +44,25 @@ class StateRefreshActivity : AppCompatActivity() {
             if (result.isSuccess) {
                 binding.contentText.text = result.getOrThrow()
                 dataCache = result.getOrThrow()
-                stateHelper.showContentOrEmpty()
+                stateHelper.showContent()
             } else {
                 result.exceptionOrNull()?.message?.let {
                     Toast.makeText(this@StateRefreshActivity, it, Toast.LENGTH_LONG).show()
                 }
-                stateHelper.showContentOrError()
+                stateHelper.showErrorOrContent()
             }
         }
     }
 
-    suspend fun fetchData(): Result<String> {
-        delay(3000)
-        return if (Random.nextBoolean()) {
-            Result.success(firstWords.random() + " " + secondWords.random())
-        } else {
+    private var fetchCount = 0
+
+    private suspend fun fetchData(): Result<String> {
+        delay(1000)
+        fetchCount++
+        return if (fetchCount % 2 == 0) {
             Result.failure(RuntimeException("Something went wrong"))
+        } else {
+            Result.success(firstWords.random() + " " + secondWords.random())
         }
     }
 }

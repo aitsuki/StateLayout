@@ -24,6 +24,8 @@ class StateLayout @JvmOverloads constructor(
     private var cachedViews = SparseArray<View?>()
     private var retryClickListener: OnClickListener? = null
     private var contentView: View? = null
+    var currentState = State.CONTENT
+        private set
 
     fun setOnRetryClickListener(listener: OnClickListener?) {
         this.retryClickListener = listener
@@ -34,23 +36,37 @@ class StateLayout @JvmOverloads constructor(
     }
 
     fun showContent() {
+        currentState = State.CONTENT
         val view = checkNotNull(contentView) { "No content view" }
         showStateView(view)
     }
 
     fun showLoading() {
+        currentState = State.LOADING
         showStateView(R.layout.layout_state_loading)
     }
 
     fun showError() {
+        currentState = State.ERROR
         showStateView(R.layout.layout_state_error)
     }
 
     fun showEmpty() {
+        currentState = State.EMPTY
         showStateView(R.layout.layout_state_empty)
     }
 
-    fun showStateView(@LayoutRes layoutId: Int): View {
+    fun showCustom(state: State, @LayoutRes layoutId: Int) {
+        currentState = state
+        showStateView(layoutId)
+    }
+
+    fun showCustom(state: State, view: View) {
+        currentState = state
+        showStateView(view)
+    }
+
+    private fun showStateView(@LayoutRes layoutId: Int): View {
         var view = cachedViews[layoutId]
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutId, this, false)
@@ -59,7 +75,7 @@ class StateLayout @JvmOverloads constructor(
         return showStateView(view!!)
     }
 
-    fun showStateView(view: View): View {
+    private fun showStateView(view: View): View {
         ensureViewAdded(view)
         for (child in children) {
             if (child != view) {
@@ -101,5 +117,9 @@ class StateLayout @JvmOverloads constructor(
         } else if (childCount == 1) {
             setContentView(getChildAt(0))
         }
+    }
+
+    enum class State {
+        CONTENT, EMPTY, LOADING, ERROR
     }
 }

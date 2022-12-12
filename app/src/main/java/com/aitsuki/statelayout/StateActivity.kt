@@ -3,6 +3,7 @@ package com.aitsuki.statelayout
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.aitsuki.statelayout.databinding.ActivityStateBinding
+import com.aitsuki.widget.StateLayout
 
 class StateActivity : AppCompatActivity() {
 
@@ -18,7 +19,10 @@ class StateActivity : AppCompatActivity() {
                 R.id.state_loading -> binding.stateLayout.showLoading()
                 R.id.state_empty -> binding.stateLayout.showEmpty()
                 R.id.state_error -> binding.stateLayout.showError()
-                R.id.state_custom -> binding.stateLayout.showStateView(R.layout.layout_state_custom)
+                R.id.state_custom -> binding.stateLayout.showCustom(
+                    StateLayout.State.EMPTY,
+                    R.layout.layout_state_custom
+                )
             }
             return@setOnMenuItemClickListener true
         }

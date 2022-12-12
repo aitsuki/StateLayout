@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_state"
-        app:title="State"
-        app:titleCentered="true" />
+        app:title="State" />
 
     <com.aitsuki.widget.StateLayout
         android:id="@+id/state_layout"
