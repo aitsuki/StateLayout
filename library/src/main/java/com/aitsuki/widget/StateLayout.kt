@@ -6,9 +6,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.children
 
 class StateLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -26,6 +24,7 @@ class StateLayout @JvmOverloads constructor(
     private var contentView: View? = null
     var currentState = State.CONTENT
         private set
+    val isLoading get() = currentState == State.LOADING
 
     fun setOnRetryClickListener(listener: OnClickListener?) {
         this.retryClickListener = listener
@@ -43,20 +42,20 @@ class StateLayout @JvmOverloads constructor(
 
     fun showLoading() {
         currentState = State.LOADING
-        showStateView(R.layout.layout_state_loading)
+        showStateView(loadingLayout)
     }
 
     fun showError() {
         currentState = State.ERROR
-        showStateView(R.layout.layout_state_error)
+        showStateView(errorLayout)
     }
 
     fun showEmpty() {
         currentState = State.EMPTY
-        showStateView(R.layout.layout_state_empty)
+        showStateView(emptyLayout)
     }
 
-    fun showCustom(state: State, @LayoutRes layoutId: Int) {
+    fun showCustom(state: State, layoutId: Int) {
         currentState = state
         showStateView(layoutId)
     }
@@ -66,7 +65,7 @@ class StateLayout @JvmOverloads constructor(
         showStateView(view)
     }
 
-    private fun showStateView(@LayoutRes layoutId: Int): View {
+    private fun showStateView(layoutId: Int): View {
         var view = cachedViews[layoutId]
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutId, this, false)
@@ -77,7 +76,8 @@ class StateLayout @JvmOverloads constructor(
 
     private fun showStateView(view: View): View {
         ensureViewAdded(view)
-        for (child in children) {
+        for (i in 0 until childCount) {
+            val child = getChildAt(i)
             if (child != view) {
                 // contentView 使用 INVISIBLE 可以避免很多奇怪的 UI 问题
                 child.visibility = if (child == contentView) View.INVISIBLE else View.GONE
@@ -93,9 +93,12 @@ class StateLayout @JvmOverloads constructor(
     }
 
     private fun ensureViewAdded(view: View) {
-        if (!children.contains(view)) {
-            addView(view)
+        for (i in 0 until childCount) {
+            if (getChildAt(i) == view) {
+                return
+            }
         }
+        addView(view)
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams?) {

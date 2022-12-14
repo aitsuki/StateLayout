@@ -22,5 +22,10 @@ class MainActivity : AppCompatActivity() {
         binding.stateRefresh.setOnClickListener {
             startActivity(Intent(this, StateRefreshActivity::class.java))
         }
+
+        // SwipeRefreshLayout + StateLayout + Paging3 协作
+        binding.stateRefreshPaging.setOnClickListener {
+            startActivity(Intent(this, StateRefreshListActivity::class.java))
+        }
     }
 }

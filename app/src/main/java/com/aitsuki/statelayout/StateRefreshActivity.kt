@@ -34,10 +34,15 @@ class StateRefreshActivity : AppCompatActivity() {
         }
         binding.refreshLayout.setOnRefreshListener { refreshData() }
         binding.stateLayout.setOnRetryClickListener { refreshData() }
+    }
+
+    override fun onResume() {
+        super.onResume()
         refreshData()
     }
 
     private fun refreshData() {
+        if (stateHelper.isRefreshing) return
         lifecycleScope.launchWhenCreated {
             stateHelper.showLoadingOrRefreshing()
             val result = fetchData()
