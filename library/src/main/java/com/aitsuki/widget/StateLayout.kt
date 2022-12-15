@@ -69,7 +69,7 @@ class StateLayout @JvmOverloads constructor(
         var view = cachedViews[layoutId]
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutId, this, false)
-            cachedViews[layoutId] = view
+            cachedViews.put(layoutId, view)
         }
         return showStateView(view!!)
     }
