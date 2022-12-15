@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.aitsuki.statelayout.databinding.ActivityStateRefreshListBinding
 import com.aitsuki.statelayout.helper.StateListHelper
 import kotlinx.coroutines.delay
-import kotlin.random.Random
 
 class StateRefreshListActivity : AppCompatActivity() {
 
@@ -44,8 +43,8 @@ class StateRefreshListActivity : AppCompatActivity() {
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
         binding.recyclerView.adapter = adapter
-        binding.refreshLayout.setOnRefreshListener { adapter.refresh() }
-        binding.stateLayout.setOnRetryClickListener { adapter.refresh() }
+        binding.refreshLayout.setOnRefreshListener { refreshData() }
+        binding.stateLayout.setOnRetryClickListener { refreshData() }
 
         adapter.addLoadStateListener {
             when (it.refresh) {
@@ -60,6 +59,11 @@ class StateRefreshListActivity : AppCompatActivity() {
                 TodoPagingSource().also { dataSource = it }
             }.flow.collect { adapter.submitData(it) }
         }
+    }
+
+    private fun refreshData() {
+        if (stateListHelper.isRefreshing) return
+        adapter.refresh()
     }
 }
 

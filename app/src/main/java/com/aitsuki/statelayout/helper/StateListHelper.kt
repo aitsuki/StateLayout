@@ -10,6 +10,7 @@ class StateListHelper(
     private val refreshLayout: SwipeRefreshLayout,
     private val customEmptyLayoutId: Int = 0,
     private val customEmptyView: View? = null,
+    private val swipeEnableOnEmpty: Boolean = true,
     private val hasCache: () -> Boolean,
 ) {
     var isRefreshing = false
@@ -17,7 +18,7 @@ class StateListHelper(
 
     fun showLoadingOrRefreshing() {
         isRefreshing = true
-        if (hasCache()) {
+        if (hasCache() || (refreshLayout.isRefreshing && swipeEnableOnEmpty)) {
             refreshLayout.isRefreshing = true
             refreshLayout.isEnabled = true
         } else {
@@ -30,10 +31,11 @@ class StateListHelper(
     fun showContentOrEmpty() {
         isRefreshing = false
         refreshLayout.isRefreshing = false
-        refreshLayout.isEnabled = true
         if (hasCache()) {
+            refreshLayout.isEnabled = true
             stateLayout.showContent()
         } else {
+            refreshLayout.isEnabled = swipeEnableOnEmpty
             if (customEmptyView != null) {
                 stateLayout.showCustom(StateLayout.State.EMPTY, customEmptyView)
             } else if (customEmptyLayoutId != 0) {
